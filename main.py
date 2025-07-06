@@ -38,6 +38,7 @@ def main():
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND , Command.echo))
 
     # asyncio.run(set_commands(app))
+    print("🤖 הבוט פועל...")
 
     app.run_polling()
     

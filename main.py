@@ -5,6 +5,7 @@ from telegram import Update, BotCommand, InlineKeyboardButton, InlineKeyboardMar
 from telegram.ext import Application , CommandHandler, MessageHandler , filters , ContextTypes, CallbackQueryHandler
 from utils.keyboards import set_keyboard
 from handlers import search_flights 
+from handlers.search_flights import search
 load_dotenv()
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 if TELEGRAM_BOT_TOKEN is None:
@@ -25,8 +26,8 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if query.data == 'start':
         await set_keyboard(update, context)  
     elif query.data == 'search':
-        await query.edit_message_text("🔍 מחפש טיסה")
-        await search_flights.search()
+        await search(update, context)
+
     elif query.data == 'help':
         await query.edit_message_text("👩🏻‍🔧 איך אפשר לעזור לך?")
     else:
@@ -39,7 +40,6 @@ def main():
     app.add_handler(CommandHandler("help", Command.help))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, Command.echo))
     app.add_handler(CallbackQueryHandler(handle_callback))
-
     print("🤖 הבוט פועל...")
     app.run_polling()
 

@@ -1,6 +1,12 @@
 import Command
+import os
+from dotenv import load_dotenv
 from telegram import Update, BotCommand, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application , CommandHandler, MessageHandler , filters , ContextTypes
+
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+if TELEGRAM_BOT_TOKEN is None:
+    raise ValueError("TELEGRAM_BOT_TOKEN environment variable not set.")
 
 async def set_commands(app):
     commads = [
@@ -24,7 +30,7 @@ async def set_keyboard(update: Update):
     
 
 def main():
-    app = Application.builder().token("7484174735:AAEU7hrsEHA4UfpNB2667By9TUpNPS8u0Us").post_init(set_commands).build()
+    app = Application.builder().token("TELEGRAM_BOT_TOKEN").post_init(set_commands).build()
 
     app.add_handler(CommandHandler("start", Command.start))
     app.add_handler(CommandHandler("help", Command.help))

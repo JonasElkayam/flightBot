@@ -6,6 +6,8 @@ from telegram.ext import Application , CommandHandler, MessageHandler , filters 
 from utils.keyboards import set_keyboard
 from handlers import search_flights 
 from handlers.search_flights import search
+from handlers.search_flights import conv_hendler
+
 load_dotenv()
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 if TELEGRAM_BOT_TOKEN is None:
@@ -38,7 +40,8 @@ def main():
 
     app.add_handler(CommandHandler("start", Command.start))
     app.add_handler(CommandHandler("help", Command.help))
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, Command.echo))
+    app.add_handler(conv_hendler)
+    # app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, Command.echo))
     app.add_handler(CallbackQueryHandler(handle_callback))
     print("🤖 הבוט פועל...")
     app.run_polling()
